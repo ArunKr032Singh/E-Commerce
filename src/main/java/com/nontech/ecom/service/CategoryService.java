@@ -8,14 +8,18 @@
 package com.nontech.ecom.service;
 
 import com.nontech.ecom.model.Category;
+import com.nontech.ecom.payload.CategoryDTO;
+import com.nontech.ecom.payload.CategoryResponse;
 
-import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCategory();
-    void createCategory(Category category);
 
-    String deleteCategory(Long categoryId);
+    CategoryResponse getAllCategory(Integer pageNumber, Integer pageSize,String sortBy, String sortOrder);
 
-    Category updateCategory(Category category, Long categoryId);
+    CategoryDTO createCategory(CategoryDTO categoryDTO);
+
+    CategoryDTO deleteCategory(Long categoryId);
+
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
+
 }
