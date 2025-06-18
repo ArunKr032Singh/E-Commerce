@@ -2,6 +2,7 @@ package com.nontech.ecom.service;
 
 import com.nontech.ecom.payload.ProductDTO;
 import com.nontech.ecom.payload.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
     ProductDTO addProduct(Long categoryId, ProductDTO productDTO);
@@ -15,4 +16,5 @@ public interface ProductService {
     ProductDTO updateProduct(Long productId, ProductDTO productDTO);
 
     ProductDTO deleteProduct(Long productId);
+
 }
