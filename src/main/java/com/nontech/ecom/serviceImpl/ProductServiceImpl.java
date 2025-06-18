@@ -14,12 +14,20 @@ import com.nontech.ecom.payload.ProductDTO;
 import com.nontech.ecom.payload.ProductResponse;
 import com.nontech.ecom.repository.CategoryRepo;
 import com.nontech.ecom.repository.ProductRepo;
+import com.nontech.ecom.service.FileService;
 import com.nontech.ecom.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.image}")
+    private String path;
 
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
@@ -116,4 +130,36 @@ public class ProductServiceImpl implements ProductService {
 
         return modelMapper.map(productFromDB, ProductDTO.class);
     }
+
+    @Override
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
+        Product productFromDB = productRepo.findById(productId).orElseThrow(() ->
+                new ResourceNotFoundException("Product", "productId", productId));
+        String fileName = fileService.uploadImage(path, image);
+
+        productFromDB.setImage(fileName);
+        Product updatedProduct = productRepo.save(productFromDB);
+        return modelMapper.map(updatedProduct, ProductDTO.class);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
